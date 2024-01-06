@@ -115,11 +115,11 @@ register_blueprint "possessor_claws"
 		damage_type = "slash",
 		fire_sound  = "summoner_melee",
 		hit_sound   = "sword",
-		slevel = { cold = 2, },
 	},
 	attributes = {
 		damage   = 20,
 		accuracy = 30,
+		slevel = { cold = 2, },
 	},
 		callbacks = {
 		on_create = [=[
@@ -183,6 +183,7 @@ register_blueprint "possessor"
 	},
 	lists = {
 		group = "being",
+		{ { "possessor"}, keywords = { "callisto", "demon", "demon1","cryo"}, weight = 9001},
 		{ { "possessor", "ice_fiend", "ice_fiend" }, keywords = { "europa", "dante", "pack", "demon", "demon1","cryo"}, weight = 30, dmax = 11 },
 		{ { "possessor", "cryoreaver"}, keywords = { "europa", "dante", "pack", "demon", "demon2", "cryo"}, weight = 40, dmin = 11 },
 		{ { "possessor", "ice_fiend", "ice_fiend" }, keywords = { "europa", "dante", "pack", "demon", "demon1","cryo"}, weight = 30, dmin = 12 },
