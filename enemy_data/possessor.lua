@@ -96,11 +96,11 @@ register_blueprint "buff_possession"
 				local loc   = possessor_spawn_location( world:get_level(), entity:get_position())
 				local p = world:get_level():add_entity( "possessor", loc, nil )
 				world:mark_destroy(entity)
-				local level = world:get_level()
-				--nova.log("POSSESSOR count before spawn: "..level.level_info.enemies)
-				--level.level_info.enemies = level.level_info.enemies + 1. DON'T DO THIS. THIS CAUSES THE INCOMPLETE LEVEL BUG!!!
-				world:add_buff( p, "disabled", 500, true )
-				--nova.log("POSSESSOR count after spawn: "..level.level_info.enemies)
+				local level = world:get_level()--the game automatically adds these back when spawning the possessor
+				level.level_info.enemies = level.level_info.enemies - 1 
+				local stats = world:get_player().statistics.data
+				stats.kills_max = stats.kills_max()-1
+				world:add_buff( p, "disabled", 500, true )		
 			end
 		]=],
 	},
@@ -183,7 +183,6 @@ register_blueprint "possessor"
 	},
 	lists = {
 		group = "being",
-		{ { "possessor"}, keywords = { "callisto", "demon", "demon1","cryo"}, weight = 9001},
 		{ { "possessor", "ice_fiend", "ice_fiend" }, keywords = { "europa", "dante", "pack", "demon", "demon1","cryo"}, weight = 30, dmax = 11 },
 		{ { "possessor", "cryoreaver"}, keywords = { "europa", "dante", "pack", "demon", "demon2", "cryo"}, weight = 40, dmin = 11 },
 		{ { "possessor", "ice_fiend", "ice_fiend" }, keywords = { "europa", "dante", "pack", "demon", "demon1","cryo"}, weight = 30, dmin = 12 },
@@ -226,11 +225,8 @@ register_blueprint "possessor"
 						world:add_buff(target, "buff_possession", 500, true ) --Doing this using target:attach instead causes multiple possessors to be able to possess a single enemy at the same time.
 						target.data.possessed = true --important. Multiple possessions still happen otherwise, only the buff is applied once instead of twice.
 						actor.attributes.experience_value = 0
-						local level = world:get_level()
-						--nova.log("POSSESSOR count before possession: "..level.level_info.enemies)
-						level.level_info.enemies = level.level_info.enemies - 1
 						world:mark_destroy(actor)
-						--nova.log("POSSESSOR count after possession: "..level.level_info.enemies)
+
 					end
 				end
 			end
